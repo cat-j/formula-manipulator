@@ -25,5 +25,6 @@ testsNegation =
         negation (formAnd (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formLit "P") (formNeg (formLit "Q")),
         negation (formImplies (formNeg (formLit "P")) (formLit "Q")) ~?= formAnd (formNeg (formLit "P")) (formNeg (formLit "Q")),
         negation (formOr (formAnd (formLit "P") (formLit "Q")) (formLit "R")) ~?= formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formNeg (formLit "R")),
-        negation (formImplies (formAnd (formLit "P") (formLit "Q")) (formOr (formLit "R") (formLit "S"))) ~?= formAnd (formAnd (formLit "P") (formLit "Q")) (formAnd (formNeg (formLit "R")) (formNeg (formLit "S")))
+        negation (formImplies (formAnd (formLit "P") (formLit "Q")) (formOr (formLit "R") (formLit "S"))) ~?= formAnd (formAnd (formLit "P") (formLit "Q")) (formAnd (formNeg (formLit "R")) (formNeg (formLit "S"))),
+        negation (formIff (formAnd (formLit "P") (formLit "Q")) (formOr (formLit "R") (formLit "S"))) ~?= formOr (formAnd (formAnd (formLit "P") (formLit "Q")) (formAnd (formNeg (formLit "R")) (formNeg (formLit "S")))) (formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formOr (formLit "R") (formLit "S")))
     ]

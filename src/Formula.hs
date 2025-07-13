@@ -75,4 +75,4 @@ negation = recFormula
     (\rec1 rec2 _ _ -> Or rec1 rec2)
     (\rec1 rec2 _ _-> And rec1 rec2)
     (\_ rec2 form1 _ -> And form1 rec2)
-    (\_ _ form1 form2 -> Or (And form1 (Neg form2)) (And (Neg form1) form2))
+    (\rec1 rec2 form1 form2 -> Or (And form1 rec2) (And rec1 form2))
