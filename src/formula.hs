@@ -1,3 +1,7 @@
+module Formula
+    (Formula, negate)
+where
+
 data Formula
     = Lit String
     | Neg Formula
@@ -43,3 +47,13 @@ recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff aFormula =
         Implies form1 form2 -> caseImplies (rec form1) (rec form2) form1 form2
         Iff form1 form2 -> caseIff (rec form1) (rec form2) form1 form2
     where rec = recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff
+
+negate :: Formula -> Formula
+
+negate = recFormula
+    (Neg . Lit)
+    (\_ form -> form)
+    (\negatedForm1 negatedForm2 _ _ -> Or negatedForm1 negatedForm2)
+    (\negatedForm1 negatedForm2 _ _-> And negatedForm1 negatedForm2)
+    (\_ _ form1 form2 -> And form1 (Neg form2))
+    (\_ _ form1 form2 -> Or (And form1 (Neg form2)) (And form2 (Neg form1)))

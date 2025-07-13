@@ -1,0 +1,20 @@
+cabal-version:      3.0
+name:               haskell-logic
+version:            0.1.0.0
+author:             Catalina Juarros
+maintainer:         catalinajuarros@gmail.com
+build-type:         Simple
+
+common nowarnings
+    ghc-options: -w
+
+executable haskell-logic
+    import:           nowarnings
+    default-language: Haskell2010
+    other-modules:
+        Formula
+    hs-source-dirs:   src
+    main-is:          Main.hs
+    build-depends:
+        base,
+        HUnit >=1.6.2.0 && <1.7
