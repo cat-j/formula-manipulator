@@ -1,5 +1,5 @@
 module Formula
-    (Formula, negate)
+    (Formula, formLit, formNeg, formAnd, formOr, formImplies, formIff, negation)
 where
 
 data Formula
@@ -9,6 +9,25 @@ data Formula
     | Or Formula Formula
     | Implies Formula Formula
     | Iff Formula Formula
+    deriving (Eq, Show)
+
+formLit :: String -> Formula
+formLit = Lit
+
+formNeg :: Formula -> Formula
+formNeg = Neg
+
+formAnd :: Formula -> Formula -> Formula
+formAnd = And
+
+formOr :: Formula -> Formula -> Formula
+formOr = Or
+
+formImplies :: Formula -> Formula -> Formula
+formImplies = Implies
+
+formIff :: Formula -> Formula -> Formula
+formIff = Iff
 
 foldFormula ::
     (String -> a) ->
@@ -48,9 +67,9 @@ recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff aFormula =
         Iff form1 form2 -> caseIff (rec form1) (rec form2) form1 form2
     where rec = recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff
 
-negate :: Formula -> Formula
+negation :: Formula -> Formula
 
-negate = recFormula
+negation = recFormula
     (Neg . Lit)
     (\_ form -> form)
     (\negatedForm1 negatedForm2 _ _ -> Or negatedForm1 negatedForm2)
