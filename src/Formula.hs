@@ -72,7 +72,7 @@ negation :: Formula -> Formula
 negation = recFormula
     (Neg . Lit)
     (\_ form -> form)
-    (\negatedForm1 negatedForm2 _ _ -> Or negatedForm1 negatedForm2)
-    (\negatedForm1 negatedForm2 _ _-> And negatedForm1 negatedForm2)
+    (\rec1 rec2 _ _ -> Or rec1 rec2)
+    (\rec1 rec2 _ _-> And rec1 rec2)
     (\_ _ form1 form2 -> And form1 (Neg form2))
     (\_ _ form1 form2 -> Or (And form1 (Neg form2)) (And (Neg form1) form2))
