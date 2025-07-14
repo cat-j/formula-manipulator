@@ -1,6 +1,6 @@
 module Formula
     (Formula, formLit, formNeg, formAnd, formOr, formImplies, formIff,
-    negation, negatedNormalForm)
+    negation, negatedNormalForm, removeImplications)
 where
 
 data Formula
