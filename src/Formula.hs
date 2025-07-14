@@ -76,3 +76,23 @@ negation = recFormula
     (\rec1 rec2 _ _-> And rec1 rec2)
     (\_ rec2 form1 _ -> And form1 rec2)
     (\rec1 rec2 form1 form2 -> Or (And form1 rec2) (And rec1 form2))
+
+negatedNormalForm :: Formula -> Formula
+
+negatedNormalForm (Lit s) = Lit s
+
+negatedNormalForm (Neg aFormula) =
+    case aFormula of
+        Lit _ -> Neg aFormula
+        Neg subFormula -> subFormula
+        And subFormula1 subFormula2 -> Or (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
+        Or subFormula1 subFormula2 -> And (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
+        _ -> error "Formula must contain neither => nor <=>."
+
+negatedNormalForm (And subFormula1 subFormula2) =
+    And (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
+
+negatedNormalForm (Or subFormula1 subFormula2) =
+    Or (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
+
+negatedNormalForm _ = error "Formula must contain neither => nor <=>."
