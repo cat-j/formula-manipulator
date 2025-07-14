@@ -30,6 +30,7 @@ formImplies = Implies
 formIff :: Formula -> Formula -> Formula
 formIff = Iff
 
+
 foldFormula ::
     (String -> a) ->
     (a -> a) ->
@@ -48,6 +49,7 @@ foldFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff aFormula =
         Implies form1 form2 -> caseImplies (rec form1) (rec form2)
         Iff form1 form2 -> caseIff (rec form1) (rec form2)
     where rec = foldFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff
+
 
 recFormula ::
     (String -> a) ->
@@ -68,6 +70,7 @@ recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff aFormula =
         Iff form1 form2 -> caseIff (rec form1) (rec form2) form1 form2
     where rec = recFormula caseLit caseNeg caseAnd caseOr caseImplies caseIff
 
+
 negation :: Formula -> Formula
 
 negation = recFormula
@@ -77,6 +80,7 @@ negation = recFormula
     (\rec1 rec2 _ _-> And rec1 rec2)
     (\_ rec2 form1 _ -> And form1 rec2)
     (\rec1 rec2 form1 form2 -> Or (And form1 rec2) (And rec1 form2))
+
 
 negatedNormalForm :: Formula -> Formula
 
@@ -97,3 +101,14 @@ negatedNormalForm (Or subFormula1 subFormula2) =
     Or (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
 
 negatedNormalForm _ = error "Formula must contain neither => nor <=>."
+
+
+removeImplications :: Formula -> Formula
+
+removeImplications = foldFormula
+    Lit
+    Neg
+    And
+    Or
+    (Or . Neg)
+    (\rec1 rec2 -> And (Or (Neg rec1) rec2) (Or rec1 (Neg rec2)))
