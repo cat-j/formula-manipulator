@@ -41,7 +41,13 @@ testsNegatedNormalForm =
         negatedNormalForm (formNeg (formOr (formLit "P") (formNeg (formLit "Q")))) ~?= formAnd (formNeg (formLit "P")) (formLit "Q"),
         negatedNormalForm (formAnd (formNeg (formLit "P")) (formLit "Q")) ~?= formAnd (formNeg (formLit "P")) (formLit "Q"),
         negatedNormalForm (formAnd (formNeg (formNeg (formLit "P"))) (formLit "Q")) ~?= formAnd (formLit "P") (formLit "Q"),
-        negatedNormalForm (formOr (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formNeg (formLit "P")) (formLit "Q")
+        negatedNormalForm (formOr (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formNeg (formLit "P")) (formLit "Q"),
+
+        -- ¬P => Q = P || Q
+        negatedNormalForm (formImplies (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formLit "P") (formLit "Q"),
+
+        -- P <=> ¬Q = (¬P || ¬Q) && (P || Q)
+        negatedNormalForm (formIff (formLit "P") (formNeg (formLit "Q"))) ~?= formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formOr (formLit "P") (formLit "Q"))
     ]
 
 testsRemoveImplications :: Test

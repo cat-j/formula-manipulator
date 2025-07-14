@@ -1,6 +1,6 @@
 module Formula
     (Formula, formLit, formNeg, formAnd, formOr, formImplies, formIff,
-    negation, negatedNormalForm, removeImplications)
+    negation, nnfNoImplications, removeImplications, negatedNormalForm)
 where
 
 data Formula
@@ -84,23 +84,28 @@ negation = recFormula
 
 negatedNormalForm :: Formula -> Formula
 
-negatedNormalForm (Lit s) = Lit s
+negatedNormalForm = nnfNoImplications . removeImplications
 
-negatedNormalForm (Neg aFormula) =
+
+nnfNoImplications :: Formula -> Formula
+
+nnfNoImplications (Lit s) = Lit s
+
+nnfNoImplications (Neg aFormula) =
     case aFormula of
         Lit _ -> Neg aFormula
         Neg subFormula -> subFormula
-        And subFormula1 subFormula2 -> Or (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
-        Or subFormula1 subFormula2 -> And (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
+        And subFormula1 subFormula2 -> Or (nnfNoImplications (Neg subFormula1)) (nnfNoImplications (Neg subFormula2))
+        Or subFormula1 subFormula2 -> And (nnfNoImplications (Neg subFormula1)) (nnfNoImplications (Neg subFormula2))
         _somethingWithImplications -> error "Formula must contain neither => nor <=>."
 
-negatedNormalForm (And subFormula1 subFormula2) =
-    And (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
+nnfNoImplications (And subFormula1 subFormula2) =
+    And (nnfNoImplications subFormula1) (nnfNoImplications subFormula2)
 
-negatedNormalForm (Or subFormula1 subFormula2) =
-    Or (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
+nnfNoImplications (Or subFormula1 subFormula2) =
+    Or (nnfNoImplications subFormula1) (nnfNoImplications subFormula2)
 
-negatedNormalForm _ = error "Formula must contain neither => nor <=>."
+nnfNoImplications _ = error "Formula must contain neither => nor <=>."
 
 
 removeImplications :: Formula -> Formula
