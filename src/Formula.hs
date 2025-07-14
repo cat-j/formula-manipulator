@@ -92,7 +92,7 @@ negatedNormalForm (Neg aFormula) =
         Neg subFormula -> subFormula
         And subFormula1 subFormula2 -> Or (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
         Or subFormula1 subFormula2 -> And (negatedNormalForm (Neg subFormula1)) (negatedNormalForm (Neg subFormula2))
-        _ -> error "Formula must contain neither => nor <=>."
+        _somethingWithImplications -> error "Formula must contain neither => nor <=>."
 
 negatedNormalForm (And subFormula1 subFormula2) =
     And (negatedNormalForm subFormula1) (negatedNormalForm subFormula2)
