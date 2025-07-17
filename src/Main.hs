@@ -18,45 +18,45 @@ allTests =
 testsNegation :: Test
 testsNegation =
     test [
-        negation (formLit "P") ~?= formNeg (formLit "P"),
-        negation (formNeg (formLit "P")) ~?= formLit "P",
-        negation (formAnd (formLit "P") (formLit "Q")) ~?= formOr (formNeg (formLit "P")) (formNeg (formLit "Q")),
-        negation (formOr (formLit "P") (formLit "Q")) ~?= formAnd (formNeg (formLit "P")) (formNeg (formLit "Q")),
-        negation (formImplies (formLit "P") (formLit "Q")) ~?= formAnd (formLit "P") (formNeg (formLit "Q")),
-        negation (formIff (formLit "P") (formLit "Q")) ~?= formOr (formAnd (formLit "P") (formNeg (formLit "Q"))) (formAnd (formNeg (formLit "P")) (formLit "Q")),
-        negation (formAnd (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formLit "P") (formNeg (formLit "Q")),
-        negation (formImplies (formNeg (formLit "P")) (formLit "Q")) ~?= formAnd (formNeg (formLit "P")) (formNeg (formLit "Q")),
-        negation (formOr (formAnd (formLit "P") (formLit "Q")) (formLit "R")) ~?= formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formNeg (formLit "R")),
-        negation (formImplies (formAnd (formLit "P") (formLit "Q")) (formOr (formLit "R") (formLit "S"))) ~?= formAnd (formAnd (formLit "P") (formLit "Q")) (formAnd (formNeg (formLit "R")) (formNeg (formLit "S"))),
-        negation (formIff (formAnd (formLit "P") (formLit "Q")) (formOr (formLit "R") (formLit "S"))) ~?= formOr (formAnd (formAnd (formLit "P") (formLit "Q")) (formAnd (formNeg (formLit "R")) (formNeg (formLit "S")))) (formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formOr (formLit "R") (formLit "S")))
+        negation (Lit "P") ~?= Neg (Lit "P"),
+        negation (Neg (Lit "P")) ~?= Lit "P",
+        negation (And (Lit "P") (Lit "Q")) ~?= Or (Neg (Lit "P")) (Neg (Lit "Q")),
+        negation (Or (Lit "P") (Lit "Q")) ~?= And (Neg (Lit "P")) (Neg (Lit "Q")),
+        negation (Implies (Lit "P") (Lit "Q")) ~?= And (Lit "P") (Neg (Lit "Q")),
+        negation (Iff (Lit "P") (Lit "Q")) ~?= Or (And (Lit "P") (Neg (Lit "Q"))) (And (Neg (Lit "P")) (Lit "Q")),
+        negation (And (Neg (Lit "P")) (Lit "Q")) ~?= Or (Lit "P") (Neg (Lit "Q")),
+        negation (Implies (Neg (Lit "P")) (Lit "Q")) ~?= And (Neg (Lit "P")) (Neg (Lit "Q")),
+        negation (Or (And (Lit "P") (Lit "Q")) (Lit "R")) ~?= And (Or (Neg (Lit "P")) (Neg (Lit "Q"))) (Neg (Lit "R")),
+        negation (Implies (And (Lit "P") (Lit "Q")) (Or (Lit "R") (Lit "S"))) ~?= And (And (Lit "P") (Lit "Q")) (And (Neg (Lit "R")) (Neg (Lit "S"))),
+        negation (Iff (And (Lit "P") (Lit "Q")) (Or (Lit "R") (Lit "S"))) ~?= Or (And (And (Lit "P") (Lit "Q")) (And (Neg (Lit "R")) (Neg (Lit "S")))) (And (Or (Neg (Lit "P")) (Neg (Lit "Q"))) (Or (Lit "R") (Lit "S")))
     ]
 
 testsNegatedNormalForm :: Test
 testsNegatedNormalForm =
     test [
-        negatedNormalForm (formLit "P") ~?= formLit "P",
-        negatedNormalForm (formNeg (formLit "P")) ~?= formNeg (formLit "P"),
-        negatedNormalForm (formNeg (formNeg (formLit "P"))) ~?= formLit "P",
-        negatedNormalForm (formNeg (formAnd (formNeg (formLit "P")) (formLit "Q"))) ~?= formOr (formLit "P") (formNeg (formLit "Q")),
-        negatedNormalForm (formNeg (formOr (formLit "P") (formNeg (formLit "Q")))) ~?= formAnd (formNeg (formLit "P")) (formLit "Q"),
-        negatedNormalForm (formAnd (formNeg (formLit "P")) (formLit "Q")) ~?= formAnd (formNeg (formLit "P")) (formLit "Q"),
-        negatedNormalForm (formAnd (formNeg (formNeg (formLit "P"))) (formLit "Q")) ~?= formAnd (formLit "P") (formLit "Q"),
-        negatedNormalForm (formOr (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formNeg (formLit "P")) (formLit "Q"),
+        negatedNormalForm (Lit "P") ~?= Lit "P",
+        negatedNormalForm (Neg (Lit "P")) ~?= Neg (Lit "P"),
+        negatedNormalForm (Neg (Neg (Lit "P"))) ~?= Lit "P",
+        negatedNormalForm (Neg (And (Neg (Lit "P")) (Lit "Q"))) ~?= Or (Lit "P") (Neg (Lit "Q")),
+        negatedNormalForm (Neg (Or (Lit "P") (Neg (Lit "Q")))) ~?= And (Neg (Lit "P")) (Lit "Q"),
+        negatedNormalForm (And (Neg (Lit "P")) (Lit "Q")) ~?= And (Neg (Lit "P")) (Lit "Q"),
+        negatedNormalForm (And (Neg (Neg (Lit "P"))) (Lit "Q")) ~?= And (Lit "P") (Lit "Q"),
+        negatedNormalForm (Or (Neg (Lit "P")) (Lit "Q")) ~?= Or (Neg (Lit "P")) (Lit "Q"),
 
         -- ¬P => Q = P || Q
-        negatedNormalForm (formImplies (formNeg (formLit "P")) (formLit "Q")) ~?= formOr (formLit "P") (formLit "Q"),
+        negatedNormalForm (Implies (Neg (Lit "P")) (Lit "Q")) ~?= Or (Lit "P") (Lit "Q"),
 
         -- P <=> ¬Q = (¬P || ¬Q) && (P || Q)
-        negatedNormalForm (formIff (formLit "P") (formNeg (formLit "Q"))) ~?= formAnd (formOr (formNeg (formLit "P")) (formNeg (formLit "Q"))) (formOr (formLit "P") (formLit "Q"))
+        negatedNormalForm (Iff (Lit "P") (Neg (Lit "Q"))) ~?= And (Or (Neg (Lit "P")) (Neg (Lit "Q"))) (Or (Lit "P") (Lit "Q"))
     ]
 
 testsRemoveImplications :: Test
 testsRemoveImplications =
     test [
-        removeImplications (formLit "P") ~?= formLit "P",
-        removeImplications (formNeg (formLit "P")) ~?= formNeg (formLit "P"),
-        removeImplications (formAnd (formLit "P") (formLit "Q")) ~?= formAnd (formLit "P") (formLit "Q"),
-        removeImplications (formOr (formLit "P") (formLit "Q")) ~?= formOr (formLit "P") (formLit "Q"),
-        removeImplications (formImplies (formLit "P") (formLit "Q")) ~?= formOr (formNeg (formLit "P")) (formLit "Q"),
-        removeImplications (formIff (formLit "P") (formLit "Q")) ~?= formAnd (formOr (formNeg (formLit "P")) (formLit "Q")) (formOr (formLit "P") (formNeg (formLit "Q")))
+        removeImplications (Lit "P") ~?= Lit "P",
+        removeImplications (Neg (Lit "P")) ~?= Neg (Lit "P"),
+        removeImplications (And (Lit "P") (Lit "Q")) ~?= And (Lit "P") (Lit "Q"),
+        removeImplications (Or (Lit "P") (Lit "Q")) ~?= Or (Lit "P") (Lit "Q"),
+        removeImplications (Implies (Lit "P") (Lit "Q")) ~?= Or (Neg (Lit "P")) (Lit "Q"),
+        removeImplications (Iff (Lit "P") (Lit "Q")) ~?= And (Or (Neg (Lit "P")) (Lit "Q")) (Or (Lit "P") (Neg (Lit "Q")))
     ]

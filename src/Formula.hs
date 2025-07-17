@@ -1,5 +1,5 @@
 module Formula
-    (Formula, formLit, formNeg, formAnd, formOr, formImplies, formIff,
+    (Formula (Lit, Neg, And, Or, Implies, Iff),
     negation, nnfNoImplications, removeImplications, negatedNormalForm)
 where
 
@@ -11,25 +11,6 @@ data Formula
     | Implies Formula Formula
     | Iff Formula Formula
     deriving (Eq, Show)
-
-formLit :: String -> Formula
-formLit = Lit
-
-formNeg :: Formula -> Formula
-formNeg = Neg
-
-formAnd :: Formula -> Formula -> Formula
-formAnd = And
-
-formOr :: Formula -> Formula -> Formula
-formOr = Or
-
-formImplies :: Formula -> Formula -> Formula
-formImplies = Implies
-
-formIff :: Formula -> Formula -> Formula
-formIff = Iff
-
 
 foldFormula ::
     (String -> a) ->
