@@ -3,7 +3,7 @@ module Formula
     negation,
     nnfNoImplications,
     removeImplications,
-    negatedNormalForm,
+    negatedNormalForm
   )
 where
 
