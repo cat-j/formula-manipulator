@@ -1,5 +1,5 @@
 module Formula
-  ( Formula (Lit, Neg, And, Or, Implies, Iff),
+  ( Formula (..),
     negation,
     nnfNoImplications,
     removeImplications,
